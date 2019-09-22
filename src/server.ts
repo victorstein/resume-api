@@ -18,7 +18,10 @@ import Resolvers from './resolvers'
   })
 
   // Create apollo server
-  let server = new ApolloServer({ schema })
+  let server = new ApolloServer({
+    schema,
+    playground: process.env.NODE_ENV !== 'production'
+  })
 
   // Apply express middleware
   server.applyMiddleware({ app })
