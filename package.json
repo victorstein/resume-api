@@ -1,0 +1,28 @@
+{
+  "name": "resume-api",
+  "version": "1.0.0",
+  "description": "This is a Firebase hosted graphql API that will simplify the process of hosting resume information and consume it through an API.",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorstein/resume-api.git"
+  },
+  "keywords": [
+    "api",
+    "resume",
+    "nicaragua",
+    "apollo",
+    "graphql",
+    "typescript",
+    "mongo"
+  ],
+  "author": "Alfonso Gomez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victorstein/resume-api/issues"
+  },
+  "homepage": "https://github.com/victorstein/resume-api#readme"
+}
