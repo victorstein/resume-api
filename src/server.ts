@@ -7,25 +7,39 @@ import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import { buildSchema } from 'type-graphql'
 import Resolvers from './resolvers'
+import mongoose from 'mongoose'
 
 (async () => {
-  // Create express app
-  const app = express()
+  try {
+    // Create express app
+    const app = express()
 
-  // Create schemas
-  const schema = await buildSchema({
-    resolvers: [...Resolvers]
-  })
+    // Create schemas
+    const schema = await buildSchema({
+      resolvers: [...Resolvers]
+    })
 
-  // Create apollo server
-  let server = new ApolloServer({
-    schema,
-    playground: process.env.NODE_ENV !== 'production'
-  })
+    // get database variables and port
+    const { DB_USERNAME, DB_PASSWORD, DB_URI, PORT } = process.env
 
-  // Apply express middleware
-  server.applyMiddleware({ app })
+    // Connect to DB
+    await mongoose.connect(`mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}${DB_URI}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
 
-  // Start listening
-  app.listen(process.env.PORT, () => console.log(`Server running in http://localhost:${process.env.PORT}/graphql`))
+    // Create apollo server
+    let server = new ApolloServer({
+      schema,
+      playground: process.env.NODE_ENV !== 'production'
+    })
+
+    // Apply express middleware
+    server.applyMiddleware({ app })
+
+    // Start listening
+    app.listen(PORT, () => console.log(`Server running in http://localhost:${PORT}/graphql`))
+  } catch (e) {
+    console.log(e)
+  }
 })()
