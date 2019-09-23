@@ -1,4 +1,4 @@
-import User from './user'
+import User from './userResolvers'
 
 export default [
   User

@@ -8,6 +8,8 @@ import express from 'express'
 import { buildSchema } from 'type-graphql'
 import Resolvers from './resolvers'
 import mongoose from 'mongoose'
+// Import model
+import Models from './models'
 
 (async () => {
   try {
@@ -31,7 +33,10 @@ import mongoose from 'mongoose'
     // Create apollo server
     let server = new ApolloServer({
       schema,
-      playground: process.env.NODE_ENV !== 'production'
+      playground: process.env.NODE_ENV !== 'production',
+      context: {
+        ...Models
+      }
     })
 
     // Apply express middleware

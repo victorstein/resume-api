@@ -1,6 +1,5 @@
 import { prop, Typegoose } from '@hasezoey/typegoose'
-import { ObjectType, Field, ID } from 'type-graphql'
-import Joi from '@hapi/joi'
+import { ObjectType, Field, ID, Root } from 'type-graphql'
 
 @ObjectType({ description: 'User Model' })
 export class User extends Typegoose {
@@ -16,20 +15,20 @@ export class User extends Typegoose {
   lastName!: string
 
   @Field()
-  @prop({ required: true, lowercase: true, validate: {
-   validator: (val) => {
-      let assert = Joi.string().email({ minDomainSegments: 2 }).validate(val)
-      return Boolean(!assert.error)
-    },
-    message: 'Invalid email address' 
-  }})
+  @prop({ required: true, lowercase: true })
   email!: string
 
   @Field()
-  fullName: string
+  fullName (@Root() parent: any): string {
+    return `${parent.firstName} ${parent.lastName}`
+  }
 
   @prop({ required: true })
   password!: string
+
+  @prop({ default: false })
+  @Field()
+  active: boolean
 }
 
-export const userModel = new User().getModelForClass(User)
+export const userModel = new User().getModelForClass(User, { schemaOptions: { timestamps: true } })
