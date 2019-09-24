@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 const { TOKEN_SECRET } = process.env
 
-export const isAuth: MiddlewareFn<context> = async ({ context }, next) => {
+export const isAuth: MiddlewareFn<context> = ({ context }, next) => {
   let authHeader = context.req.headers['authorization']
 
   try {
