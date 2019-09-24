@@ -34,8 +34,12 @@ import Models from './models'
     let server = new ApolloServer({
       schema,
       playground: process.env.NODE_ENV !== 'production',
-      context: {
-        ...Models
+      context: ({ req, res }) => {
+        return {
+          req,
+          res,
+          ...Models
+        }
       }
     })
 
