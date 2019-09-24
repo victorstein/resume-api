@@ -1,12 +1,12 @@
-import { Resolver, Mutation, Query, Args, Ctx, UseMiddleware } from "type-graphql";
+import { Resolver, Mutation, Query, Args, Ctx, UseMiddleware } from 'type-graphql'
 import { ApolloError, AuthenticationError } from 'apollo-server-express'
 import { User } from '../../models/user'
 import bcrypt from 'bcryptjs'
 import signUpInterface from './signUpInterface'
-import { loginInterface } from "./loginInterface"
+import { loginInterface } from './loginInterface'
 import jwt from 'jsonwebtoken'
-import { context } from "src/models";
-import { isAuth } from "../middlewares/isAuth";
+import { context } from 'src/models'
+import { isAuth } from '../middlewares/isAuth'
 
 // Retreive env constants
 const {
@@ -81,6 +81,9 @@ class UserResolvers {
 
       // If the password is invalid return error
       if (!valid) { throw new Error('Unable to login. Invalid credentials') }
+
+      // Verify the user is active
+      if (!user.active) { throw new Error('Unable to login. Your account hasn\'t been activated yet. Please check your email and follow the activation steps.') }
 
       // Create a refresh token
       let refreshToken = jwt.sign({ id: user._id }, REFRESH_TOKEN_SECRET!, { expiresIn: REFRESH_TOKEN_EXPIRATION })
